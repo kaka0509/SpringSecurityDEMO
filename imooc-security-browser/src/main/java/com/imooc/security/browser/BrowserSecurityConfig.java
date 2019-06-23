@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.InMemoryTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 @Configuration
 public class BrowserSecurityConfig extends AbstractChannelSecurityConfig { //继承基础配置
@@ -36,6 +37,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig { //继
 
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    @Autowired
+    private SpringSocialConfigurer immocSocialSecurityConfig;
 
     // 处理密码加密解密
     @Bean
@@ -60,6 +64,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig { //继
         http.apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(immocSocialSecurityConfig)
                 .and()
                 .rememberMe()
                 .tokenRepository(persistentTokenRepository()) //token存储策略
