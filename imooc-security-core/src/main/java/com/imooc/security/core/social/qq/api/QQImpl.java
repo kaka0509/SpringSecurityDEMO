@@ -23,6 +23,11 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
+    /**
+     * 通过输入在上一步获取的Access Token，得到对应用户身份的OpenID。
+     * OpenID是此网站上或应用中唯一对应用户身份的标识。
+     * 网站或应用可将此ID进行存储，便于用户下次登录时辨识其身份，或将其与用户在网站上或应用中的原有账号进行绑定。
+     */
     public QQImpl(String accessToken, String appId) {
         //token存储在请求参数里
         super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
