@@ -1,5 +1,6 @@
 package com.imooc.security.browser;
 
+import com.imooc.security.browser.session.ImoocExpiredSessionStrategy;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -62,24 +63,31 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig { //继
         applyPasswordAuthenticationConfig(http);
 
         http.apply(validateCodeSecurityConfig)
-                .and()
+                    .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
+                    .and()
                 .apply(immocSocialSecurityConfig)
-                .and()
+                    .and()
                 .rememberMe()
-                .tokenRepository(persistentTokenRepository()) //token存储策略
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())// 过期时间
-                .userDetailsService(userDetailsService)
-                .and()
+                    .tokenRepository(persistentTokenRepository()) //token存储策略
+                    .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())// 过期时间
+                    .userDetailsService(userDetailsService)
+                    .and()
+                .sessionManagement()
+                    .invalidSessionUrl("/session/invalid")
+                    .maximumSessions(1) //最大登录数
+                    .maxSessionsPreventsLogin(true) //当最大登录数达到时阻止登录
+                    .expiredSessionStrategy(new ImoocExpiredSessionStrategy()) //并发登录失效策略
+                    .and()
+                    .and()
                 .authorizeRequests() //这句下面的部分都是授权的配置
-                .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                    .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
-                        "/user/regist"
-                ).permitAll() //这些请求不控制
+                        "/user/regist","/session/invalid")
+                .permitAll() //这些请求不控制
                 .anyRequest()  //所有请求
                 .authenticated() //都需要身份验证
                 .and()
