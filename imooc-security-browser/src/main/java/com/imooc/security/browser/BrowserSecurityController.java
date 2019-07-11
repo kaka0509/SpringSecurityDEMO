@@ -2,6 +2,7 @@ package com.imooc.security.browser;
 
 import com.imooc.security.browser.support.SimpleResponse;
 import com.imooc.security.browser.support.SocialUserInfo;
+import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -65,10 +66,13 @@ public class BrowserSecurityController {
         return userInfo;
     }
 
-    @GetMapping("/session/invalid")
+    @GetMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public SimpleResponse sessionInvalid(){
+    public SimpleResponse sessionInvalid(boolean concurrency) {
         String message = "session失效";
+        if (concurrency) {
+            message = message + ",有可能是并发登录导致";
+        }
         return new SimpleResponse(message);
     }
 }
