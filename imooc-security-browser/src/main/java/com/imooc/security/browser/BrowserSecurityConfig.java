@@ -98,12 +98,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig { //继
                 .csrf().disable();//跨站请求防护关闭
     }
 
-    // 处理密码加密解密
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         //JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();

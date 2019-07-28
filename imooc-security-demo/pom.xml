@@ -10,9 +10,15 @@
 	</parent>
 
 	<dependencies>
+		<!--指定demo工程依赖app模块的配置，忽略browser模块-->
+		<!--<dependency>-->
+			<!--<groupId>com.imooc.security</groupId>-->
+			<!--<artifactId>imooc-security-browser</artifactId>-->
+			<!--<version>${imooc.security.version}</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.imooc.security</groupId>
-			<artifactId>imooc-security-browser</artifactId>
+			<artifactId>imooc-security-app</artifactId>
 			<version>${imooc.security.version}</version>
 		</dependency>
 		<dependency>

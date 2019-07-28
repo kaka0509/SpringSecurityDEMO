@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * 由业务系统提供,覆盖默认的UserDetailsService
  */
 @Component
-public class MyUserDetailService implements UserDetailsService, SocialUserDetailsService {
+public class DemoUserDetailService implements UserDetailsService, SocialUserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -46,6 +46,9 @@ public class MyUserDetailService implements UserDetailsService, SocialUserDetail
          * 第二个参数传入数据库中的用户名密码，如果前端传过来的不匹配则会抛异常：坏的凭证
          */
         return new SocialUser(userId, password, //认证信息
-                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));//权限信息
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));//权限信息
     }
+
+    // 第三方应用imooc 请求授权码地址
+    // http://localhost:8060/oauth/authorize?response_type=code&client_id=imooc&redirect_uri=https://www.baidu.com&scope=all
 }
