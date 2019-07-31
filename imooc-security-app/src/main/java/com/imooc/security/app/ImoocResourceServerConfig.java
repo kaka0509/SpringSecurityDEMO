@@ -17,11 +17,12 @@ import org.springframework.social.security.SpringSocialConfigurer;
 /**
  * 使用 @EnableResourceServer 指定应用为OAuth2资源服务器
  * 作为资源服务器的安全配置策略也写在这个类里面
+ *
  * @author Skye
  */
 @Configuration
 @EnableResourceServer
-public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter{
+public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Autowired
     protected AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
@@ -57,11 +58,12 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter{
                 .apply(imoocSocialSecurityConfig)
                 .and()
                 .authorizeRequests()
+
                 .antMatchers(
                         SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         securityProperties.getBrowser().getSignUpUrl(),
                         securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
                         securityProperties.getBrowser().getSignOutUrl(),
