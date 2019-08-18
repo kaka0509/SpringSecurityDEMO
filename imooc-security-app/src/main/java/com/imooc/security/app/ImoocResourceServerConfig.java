@@ -1,5 +1,6 @@
 package com.imooc.security.app;
 
+import com.imooc.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -37,6 +38,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
+
+    @Autowired
     private SpringSocialConfigurer imoocSocialSecurityConfig;
 
     @Autowired
@@ -54,6 +58,8 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
         http.apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(openIdAuthenticationSecurityConfig)
                 .and()
                 .apply(imoocSocialSecurityConfig)
                 .and()
