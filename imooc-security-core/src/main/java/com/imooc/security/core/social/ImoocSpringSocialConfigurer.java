@@ -4,6 +4,7 @@ import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
+ * 配置需要处理的URL和过滤器后置处理器
  * @author Skye
  */
 public class ImoocSpringSocialConfigurer extends SpringSocialConfigurer {

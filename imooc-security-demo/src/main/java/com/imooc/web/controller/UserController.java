@@ -1,6 +1,7 @@
 package com.imooc.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.imooc.security.app.social.impl.AppSignUpUtils;
 import com.imooc.web.dto.User;
 import com.imooc.web.dto.UserQueryCondition;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -26,11 +27,15 @@ public class UserController {
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
 
+    @Autowired
+    private AppSignUpUtils appSignUpUtils;
+
     @PostMapping("/regist")
     public void regist(User user, HttpServletRequest request) {
         // 不管是注册用户还是绑定用户，都会拿到一个用户唯一标识
         String userId = user.getUsername();
-        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+        // 使用自定义的注册
+        appSignUpUtils.doPostSignUp(new ServletWebRequest(request),userId);
     }
 
     /**
