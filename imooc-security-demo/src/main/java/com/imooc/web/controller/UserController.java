@@ -2,11 +2,16 @@ package com.imooc.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.security.app.social.impl.AppSignUpUtils;
+import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.web.dto.User;
 import com.imooc.web.dto.UserQueryCondition;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +35,28 @@ public class UserController {
     @Autowired
     private AppSignUpUtils appSignUpUtils;
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @PostMapping("/regist")
     public void regist(User user, HttpServletRequest request) {
         // 不管是注册用户还是绑定用户，都会拿到一个用户唯一标识
         String userId = user.getUsername();
         // 使用自定义的注册
-        appSignUpUtils.doPostSignUp(new ServletWebRequest(request),userId);
+        appSignUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
+    }
+
+    @GetMapping("/me")
+    public Object getCurrentUser(Authentication user,HttpServletRequest request) throws Exception{
+        // 使用工具类解析jwt里面的内容
+        String header = request.getHeader("Authorization");
+        String token = StringUtils.substringAfter(header, "bearer ");
+        Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8"))
+                .parseClaimsJws(token).getBody();
+
+        String company = (String) claims.get("company");
+
+        return user;
     }
 
     /**

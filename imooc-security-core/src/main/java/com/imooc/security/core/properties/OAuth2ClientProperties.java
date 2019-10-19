@@ -1,6 +1,7 @@
 package com.imooc.security.core.properties;
 
 /**
+ * Oauth2 客户端配置信息
  * @author Skye
  */
 public class OAuth2ClientProperties {
