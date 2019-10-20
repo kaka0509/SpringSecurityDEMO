@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public Object getCurrentUser(Authentication user,HttpServletRequest request) throws Exception{
+    public Object getCurrentUser(Authentication user, HttpServletRequest request) throws Exception {
         // 使用工具类解析jwt里面的内容
         String header = request.getHeader("Authorization");
         String token = StringUtils.substringAfter(header, "bearer ");

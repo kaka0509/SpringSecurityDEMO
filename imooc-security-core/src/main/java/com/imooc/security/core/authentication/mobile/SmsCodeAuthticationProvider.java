@@ -1,4 +1,4 @@
-package com.imooc.security.core.validate.code.authentication.mobile;
+package com.imooc.security.core.authentication.mobile;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;

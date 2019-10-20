@@ -1,10 +1,11 @@
 package com.imooc.security.app;
 
 import com.imooc.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
+import com.imooc.security.core.authorize.AuthorizeConfigManager;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.ValidateCodeSecurityConfig;
-import com.imooc.security.core.validate.code.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,6 +47,8 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private AuthorizeConfigManager authorizeConfigManager;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -57,27 +60,29 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 
         http.apply(validateCodeSecurityConfig)
                 .and()
-                .apply(smsCodeAuthenticationSecurityConfig)
+             .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
-                .apply(openIdAuthenticationSecurityConfig)
+             .apply(openIdAuthenticationSecurityConfig)
                 .and()
-                .apply(imoocSocialSecurityConfig)
+             .apply(imoocSocialSecurityConfig)
                 .and()
-                .authorizeRequests()
-
-                .antMatchers(
-                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                        securityProperties.getBrowser().getLoginPage(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
-                        "/user/regist","/social/signUp")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+//             .authorizeRequests()
+//                .antMatchers(
+//                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+//                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+//                        securityProperties.getBrowser().getLoginPage(),
+//                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
+//                        securityProperties.getBrowser().getSignUpUrl(),
+//                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+//                        securityProperties.getBrowser().getSignOutUrl(),
+//                        "/user/regist","/social/signUp")
+//                .permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                使用AuthorizeConfigManager+AuthorizeConfigProvider 剥离配置 上面代码已经用不上
                 .csrf().disable();
+
+        authorizeConfigManager.config(http.authorizeRequests());
     }
 }

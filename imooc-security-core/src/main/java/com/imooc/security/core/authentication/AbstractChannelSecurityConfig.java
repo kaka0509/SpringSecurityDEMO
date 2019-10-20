@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.imooc.security.core.validate.code.authentication;
+package com.imooc.security.core.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
